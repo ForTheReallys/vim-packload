@@ -15,7 +15,9 @@ function packload#PackageAdd(...)
 		let l:plugins = filter(l:plugins, {_, val -> index(g:packload_excluded_packages, val) == -1})
 
 		for plugin in l:plugins
-			execute "packadd " . fnamemodify(plugin, ":t")
+			execute "silent! doautocmd SourcePre " . plugin
+			execute "packadd " . plugin
+			execute "silent! doautocmd SourcePost " . plugin
 		endfor
 	endfor
 endfunction
