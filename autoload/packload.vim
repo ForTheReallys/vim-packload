@@ -1,3 +1,14 @@
+"add the plugin or wait until vimrc is finished loading
+function s:AddPlugin(plugin)
+	if v:vim_did_enter
+		execute "doautocmd User PreLoad-" . a:plugin
+		execute "packadd " . a:plugin
+		execute "doautocmd User PostLoad-" . a:plugin
+	else
+		execute printf("autocmd VimEnter * call s:AddPlugin('%s')", a:plugin)
+	endif
+endfunction
+
 " Load all plugins in pack/*/opt/ and exclude plugins in a:exclude
 function packload#PackageAdd(...)
 	if !exists('g:packload_excluded_packages')
@@ -15,9 +26,7 @@ function packload#PackageAdd(...)
 		let l:plugins = filter(l:plugins, {_, val -> index(g:packload_excluded_packages, val) == -1})
 
 		for plugin in l:plugins
-			execute "silent! doautocmd SourcePre " . plugin
-			execute "packadd " . plugin
-			execute "silent! doautocmd SourcePost " . plugin
+			call s:AddPlugin(plugin)
 		endfor
 	endfor
 endfunction

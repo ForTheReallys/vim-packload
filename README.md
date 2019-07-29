@@ -19,3 +19,7 @@ Example:
 
 For example, use `:PackageAdd package1 package2 ...` to add all plugins under
 pack/{package1,package2,...}/opt/
+
+Upon loading a plugin, vim-package-loader triggers the `User` autocommands with
+the event name PreLoad-{plugin} and PostLoad-{plugin} before and after loading
+respectively.
