@@ -1,0 +1,53 @@
+*vim-packload.txt*
+
+Author: ForTheReallys
+License: MIT
+URL: https://github.com/ForTheReallys/vim-packload
+
+==============================================================================
+INTRODUCTION                                                *vim-packload-intro*
+
+Vim-packload is a nice, lightweight plugin for vim (and possibly neovim) that
+puts vim packages to good use.  In Vim 8, packages were introduced as just a
+bundle of plugins.  You could have as many packages as you wanted but were
+unable to really leverage packages out of the box, as `:packadd` only applied to
+plugins.  Vim-packload gives you the ability to load entire packages without
+having to specify each plugin.  NOTE: this only applies to optional packages as
+vim automatically loads packages in the start/ directory.
+
+==============================================================================
+COMMANDS                                                 *vim-packload-commands*
+
+vim-packload comes with only one command: `:PackageAdd`.
+
+                                                *:PackageAdd*
+:PackageAdd[!] {package1} [{package2} {package3} ...]
+                        Load all plugins under {package}/opt/.  By default,
+                        PackageAdd waits until the |VimEnter| autocommand to
+                        load plugins.  To override this and load plugins
+                        immediately, use `:PackageAdd!` (Note the bang).
+
+==============================================================================
+AUTOCOMMANDS                                         *vim-packload-autocommands*
+
+                                                 *PreLoad-* *PostLoad-*
+vim-packload triggers a |User| autocommand before and after loading each plugin.
+Before loading a plugin, vim-packload triggers the pattern PreLoad-{plugin}.
+After loading a plugin, the pattern PostLoad-{plugin} is triggered.  This can be
+used for initializing plugins before loading or defining mappings after the
+plugin is loaded.
+
+==============================================================================
+VARIABLES                                               *vim-packload-variables*
+
+Like commands, vim-packload only comes with one variable:
+`g:packload_excluded_plugins`.  This variable is simply a list of plugins that
+should not be loaded when calling `:Packageadd`.  That's it!
+
+==============================================================================
+CONTRIBUTING
+
+Don't be shy, just submit a pull request on github and I'll get back to you as
+soon as I get a chance!
+
+ vim: tw=78:ts=8:ft=help:
