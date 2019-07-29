@@ -1,19 +1,21 @@
 "add the plugin or wait until vimrc is finished loading
-function s:AddPlugin(plugin)
-	if v:vim_did_enter
+function s:AddPlugin(load_now, plugin)
+	if a:load_now || v:vim_did_enter
 		execute "doautocmd User PreLoad-" . a:plugin
 		execute "packadd " . a:plugin
 		execute "doautocmd User PostLoad-" . a:plugin
 	else
-		execute printf("autocmd VimEnter * call s:AddPlugin('%s')", a:plugin)
+		execute printf("autocmd VimEnter * call s:AddPlugin(1, '%s')", a:plugin)
 	endif
 endfunction
 
 " Load all plugins in pack/*/opt/ and exclude plugins in a:exclude
-function packload#PackageAdd(packages)
+function packload#PackageAdd(bang, packages)
 	if !exists('g:packload_excluded_packages')
 		let g:packload_excluded_packages = []
 	endif
+
+	let l:load_now = a:bang == "" ? 0 : 1
 
 	for package in a:packages
 		let l:package = globpath(&packpath, "pack/" . package)
@@ -26,7 +28,7 @@ function packload#PackageAdd(packages)
 		let l:plugins = filter(l:plugins, {_, val -> index(g:packload_excluded_packages, val) == -1})
 
 		for plugin in l:plugins
-			call s:AddPlugin(plugin)
+			call s:AddPlugin(l:load_now, plugin)
 		endfor
 	endfor
 endfunction
