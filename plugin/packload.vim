@@ -5,4 +5,4 @@ function s:Complete(A, L, P)
 	return packages
 endfunction
 
-command! -nargs=+ -complete=customlist,s:Complete PackageAdd call packload#PackageAdd(<f-args>)
+command! -nargs=+ -complete=customlist,s:Complete PackageAdd let s:args = [<f-args>] | call packload#PackageAdd(s:args)

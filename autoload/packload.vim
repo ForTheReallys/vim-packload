@@ -10,12 +10,12 @@ function s:AddPlugin(plugin)
 endfunction
 
 " Load all plugins in pack/*/opt/ and exclude plugins in a:exclude
-function packload#PackageAdd(...)
+function packload#PackageAdd(packages)
 	if !exists('g:packload_excluded_packages')
 		let g:packload_excluded_packages = []
 	endif
 
-	for package in a:000
+	for package in a:packages
 		let l:package = globpath(&packpath, "pack/" . package)
 		let l:plugins = glob(l:package . "/opt/*", 0, 1)
 
