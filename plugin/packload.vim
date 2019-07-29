@@ -6,5 +6,4 @@ function s:Complete(A, L, P)
 endfunction
 
 command! -nargs=+ -bang -complete=customlist,s:Complete PackageAdd
-			\ let s:args = [<f-args>] |
-			\ call packload#PackageAdd("<bang>", s:args)
+			\ call packload#PackageAdd("<bang>", [<f-args>])
