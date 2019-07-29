@@ -11,8 +11,8 @@ endfunction
 
 " Load all plugins in pack/*/opt/ and exclude plugins in a:exclude
 function packload#PackageAdd(bang, packages)
-	if !exists('g:packload_excluded_packages')
-		let g:packload_excluded_packages = []
+	if !exists('g:packload_excluded_plugins')
+		let g:packload_excluded_plugins = []
 	endif
 
 	let l:load_now = a:bang == "" ? 0 : 1
@@ -25,7 +25,7 @@ function packload#PackageAdd(bang, packages)
 		let l:plugins = map(l:plugins, {_, val -> fnamemodify(val, ":t")})
 
 		"don't include plugins in a:exclude
-		let l:plugins = filter(l:plugins, {_, val -> index(g:packload_excluded_packages, val) == -1})
+		let l:plugins = filter(l:plugins, {_, val -> index(g:packload_excluded_plugins, val) == -1})
 
 		for plugin in l:plugins
 			call s:AddPlugin(l:load_now, plugin)
