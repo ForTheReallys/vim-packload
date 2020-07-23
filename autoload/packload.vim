@@ -1,9 +1,21 @@
 "add the plugin or wait until vimrc is finished loading
 function s:AddPlugin(load_now, plugin)
 	if a:load_now || v:vim_did_enter
-		execute "doautocmd User PreLoad-" . a:plugin
-		execute "packadd " . a:plugin
-		execute "doautocmd User PostLoad-" . a:plugin
+		" vim function names don't allow dash ('-')
+		let l:file = substitute(a:plugin, "-", "_", "g")
+
+		execute printf("runtime autoload/plugins/%s.vim", l:file)
+
+		let l:PreLoad = function(printf("plugins#%s#PreLoad", l:file))
+		let l:PostLoad = function(printf("plugins#%s#PostLoad", l:file))
+
+		if exists("*l:PreLoad")
+			call l:PreLoad()
+		endif
+		execute printf("packadd %s", a:plugin)
+		if exists("*l:PostLoad")
+			call l:PostLoad()
+		endif
 	else
 		execute printf("autocmd VimEnter * call s:AddPlugin(1, '%s')", a:plugin)
 	endif
