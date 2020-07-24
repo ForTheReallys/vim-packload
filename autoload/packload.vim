@@ -2,7 +2,7 @@
 function s:AddPlugin(load_now, plugin)
 	if a:load_now || v:vim_did_enter
 		" vim function names don't allow dash ('-')
-		let l:file = substitute(a:plugin, "-", "_", "g")
+		let l:file = substitute(a:plugin, "[\.-]", "_", "g")
 
 		execute printf("runtime autoload/plugins/%s.vim", l:file)
 
