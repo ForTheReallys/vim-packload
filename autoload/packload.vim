@@ -30,9 +30,14 @@ function packload#PackageAdd(bang, packages)
 	let l:load_now = a:bang == "" ? 0 : 1
 
 	for package in a:packages
-		let l:package = globpath(&packpath, "pack/" . package)
-		if !l:package | continue | endif
-		let l:plugins = glob(l:package . "/opt/*", 0, 1)
+		let l:packagepath = globpath(&packpath, "pack/" . package)
+
+		if !isdirectory(l:packagepath)
+			execute printf("echoerr 'Cannot find package: %s'", package)
+			continue
+		endif
+
+		let l:plugins = glob(l:packagepath . "/opt/*", 0, 1)
 
 		"get the basename of the package
 		let l:plugins = map(l:plugins, {_, val -> fnamemodify(val, ":t")})
