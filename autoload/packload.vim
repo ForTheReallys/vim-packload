@@ -31,6 +31,7 @@ function packload#PackageAdd(bang, packages)
 
 	for package in a:packages
 		let l:package = globpath(&packpath, "pack/" . package)
+		if !l:package | continue | endif
 		let l:plugins = glob(l:package . "/opt/*", 0, 1)
 
 		"get the basename of the package
