@@ -1,9 +1,9 @@
 "add the plugin or wait until vimrc is finished loading
 function s:AddPlugin(load_now, plugin)
 	if a:load_now || v:vim_did_enter
-		execute "doautocmd User PreLoad-" . a:plugin
+		execute "silent doautocmd User PreLoad-" . a:plugin
 		execute "packadd " . a:plugin
-		execute "doautocmd User PostLoad-" . a:plugin
+		execute "silent doautocmd User PostLoad-" . a:plugin
 	else
 		execute printf("autocmd VimEnter * call s:AddPlugin(1, '%s')", a:plugin)
 	endif
@@ -19,6 +19,9 @@ function packload#PackageAdd(bang, packages)
 
 	for package in a:packages
 		let l:package = globpath(&packpath, "pack/" . package)
+		if l:package == ""
+			continue
+		endif
 		let l:plugins = glob(l:package . "/opt/*", 0, 1)
 
 		"get the basename of the package
